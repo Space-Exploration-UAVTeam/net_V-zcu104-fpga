@@ -1,0 +1,42 @@
+# 系统/编辑器
+.DS_Store
+__pycache__/
+*.pyc
+
+# 仿真编译产物
+simv
+*.vcd
+*.wdb
+*.jou
+*.backup.log
+
+# Vivado/SDK 工程产物（如本地建工程）
+*.runs/
+*.sim/
+*.srcs/
+*.hw/
+*.sdk/
+*.xpr
+.xil/
+
+# 临时实验文件
+test_xpm*.*
+uram_inf_test*.*
+xpm_test*.*
+bmg_test.tcl
+dump_bmg.tcl
+
+# 本地保留但不入库的文件（早期笔记/失败方案/探针/过程文档）
+总结四个 GitHub 项目.docx
+报告.docx
+run_impl_project.tcl
+data/hex/weights_all.mem
+data/hex/weights_all.coe
+scripts/vivado/probe2.tcl
+sdk/probe_sdk.tcl
+sdk/probe_lwip.tcl
+sdk/probe_setlib.tcl
+docs/checklist_for_model_classmate.md
+docs/deployment_roadmap.md
+docs/项目进展汇报_20260813.md
+docs/案例借鉴与部署建议_20260811.md

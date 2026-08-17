@@ -1,0 +1,36 @@
+=== 单层独立验证: 样本 0, 层 1 ===
+PASS: 样本 0 层 1 (512/512，524 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 5316000 (1ps)
+=== 单层独立验证: 样本 0, 层 2 ===
+PASS: 样本 0 层 2 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 0, 层 3 ===
+PASS: 样本 0 层 3 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 0, 层 4 ===
+PASS: 样本 0 层 4 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 0, 层 5 ===
+PASS: 样本 0 层 5 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 0, 层 6 ===
+PASS: 样本 0 层 6 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 0, 层 7 ===
+PASS: 样本 0 层 7  acc7=001ea66b88（40bit 全等，43 拍）
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 475000 (1ps)
+=== 单层独立验证: 样本 5, 层 3 ===
+PASS: 样本 5 层 3 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 12, 层 6 ===
+PASS: 样本 12 层 6 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 19, 层 2 ===
+PASS: 样本 19 层 2 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)
+=== 单层独立验证: 样本 26, 层 7 ===
+PASS: 样本 26 层 7  acc7=00421e5e96（40bit 全等，43 拍）
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 475000 (1ps)
+=== 单层独立验证: 样本 0, 层 4 ===
+PASS: 样本 0 层 4 (512/512，16396 拍)
+rtl/tb/net_v_layer_debug_tb.v:220: $finish called at 164036000 (1ps)

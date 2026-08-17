@@ -1,0 +1,24 @@
+﻿net_V 输入标准化参数
+
+计算公式：z_j = (x_j - mean_j) /sqrt(variance_j)
+其中 z_j是标准化输入，x_j是原始输入
+mean_j是训练样本输入均值，variance_j 是训练样本总体方差
+
+七维原始输入特征顺序：
+feature_01: 初始轨道高度h0，单位 km
+feature_02: 初始轨道倾角 I0，单位 rad
+feature_03: 目标与初始轨道高度差 hf-h0，单位 km
+feature_04: 目标与初始轨道倾角差 If-I0，单位 rad
+feature_05: 目标与初始升交点赤经差 omegaf-omega0，单位 rad
+feature_06: 推力加速度 fmax，单位 m/s^2
+feature_07: 转移持续时间 tf，单位 s
+
+原始输入标准化参数：每行依次为 feature_name：mean_j   variance_j 。
+
+feature_01：5.9142e+02   5.3181e+04
+feature_02：1.2185e+00   8.5724e-03
+feature_03：5.9479e-01   6.1759e+04
+feature_04：5.8380e-04   2.0139e-03
+feature_05：-8.5389e-01   5.8890e-01
+feature_06：2.7806e-03   1.6688e-06
+feature_07：1.8248e+06   3.2837e+12

@@ -1,0 +1,8 @@
+the_ROM_image:
+{
+  [fsbl_config] a53_x64
+  [bootloader]  C:/yshlearn/FPGA_learn/RL_project_sdk/ws/fsbl/Debug/fsbl.elf
+  [pmufw_image] C:/yshlearn/FPGA_learn/RL_project_sdk/ws/pmufw/Debug/pmufw.elf
+  C:/yshlearn/FPGA_learn/RL_project_bd/sdk/design_1_wrapper.bit
+  C:/yshlearn/FPGA_learn/RL_project_sdk/ws/net_v_app/Debug/net_v_app.elf
+}
