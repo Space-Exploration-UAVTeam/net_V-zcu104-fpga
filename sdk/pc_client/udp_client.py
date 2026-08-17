@@ -132,7 +132,8 @@ def cmd_sample(board, port, timeout):
     vec = {"name": "s00_sample_00",
            "raw": [7.5784e2, 1.0608e0, 4.1086e1, 3.4237e-2,
                    -2.4982e0, 2.5000e-3, 3.4560e6],
-           "dv_float": 490.4415}   # 浮点前向期望；定点 golden 为 490.4013
+           "dv_float": 490.4415,   # 浮点前向期望
+           "dv_fixed": 490.4013}   # 定点 golden（判定基准）
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     n_pass, n_fail, _ = run_vectors(sock, board, port, timeout, [vec])
     print("sample_00: {}".format("PASS" if n_pass == 1 else "FAIL"))
