@@ -3,7 +3,7 @@
 轨道转移 ΔV 优化 RL 模型，部署到 **Xilinx ZCU104（XCZU7EV）** 做硬件推理。
 
 - 激活函数：**ELU(α=1)**（隐藏层，真实模型 net_V 交付确认）；输出层 linear 无激活
-- 目标板卡：**ZCU104 / XCZU7EV-2FFVC1156**（已定死）
+- 目标板卡：**ZCU104 / XCZU7EV-2FFVC1156**
 - 开发工具：Vivado 2018.3 + SDK 2018.3
 
 ---
