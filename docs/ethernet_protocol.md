@@ -71,24 +71,31 @@ magic 未识别的包：板端丢弃并计数（串口可观察）。协议保�
 cd RL_project/sdk/pc_client
 python3 udp_client.py --selftest    # 本地自检（假 socket，不需要板子）
 python3 udp_client.py ping          # 链路自检（4 个 echo 包）
-python3 udp_client.py sample        # sample_00：期望 ΔV=490.44±0.5
+python3 udp_client.py sample        # sample_00：期望 ΔV=490.41±0.5（v2 定点 golden 490.4064）
 python3 udp_client.py batch         # pc_test_vectors.json 全 27 组
+python3 udp_client.py batch --vectors pc_test_vectors_v2.json   # v2 交付 100 实例
 python3 udp_client.py batch --board 192.168.1.10 --port 5000 --timeout 2.0
 ```
 
 `pc_test_vectors.json` 由 `RL_project/scripts/gen_pc_test_vectors.py` 生成
-（与 golden 向量同一采样链：sample_00 + seed=777 随机 10 组 + 16 组边界；
-期望 ΔV 为浮点前向值，判定容差 0.5 m/s）。
+（与 golden 向量同一采样链：sample_00 + seed=777 随机 10 组 + 16 组边界）。
+`pc_test_vectors_v2.json` 由 `RL_project/scripts/gen_pc_test_vectors_v2.py`
+生成（v2 交付的 100 个真实实例；期望 ΔV 为交付浮点 layer_07 值，
+并附带定点 ΔV/acc7 参考）。判定容差 0.5 m/s。
 
 ## 5. 板上测试步骤（插线后）
 
 1. PC 网卡设 192.168.1.100/24，网线直连 ZCU104，确认链路 Up 1Gbps。
 2. SD 卡启动新 BOOT.bin（含 lwIP 版 app）。串口（115200 8N1）应看到：
    权重加载 → SELFTEST PASS → `UDP 服务就绪：192.168.1.10:5000`。
+   （v2 权重版自检期望值：acc7=`0x001ea68081`，ΔV=490.406 m/s）
 3. PC 上先 `python3 udp_client.py ping`（4/4 OK 再往下）。
 4. `python3 udp_client.py sample` → PASS（ΔV≈490.4）。
 5. `python3 udp_client.py batch` → 27/27 PASS，记录 infer_us / rtt 统计。
-6. 常见问题：
+6. **v2 真实实例全量回归**：`python3 udp_client.py batch --vectors
+   pc_test_vectors_v2.json` → 100/100 PASS（期望 ΔV=交付浮点 layer_07 值，
+   范围 [14.5, 938.6]，容差 0.5 m/s）。
+7. 常见问题：
    - ping 不通 → 查 PC 防火墙/网卡选线/板端串口是否打印就绪行；
    - ping 通但推理超时 → status=0，查 PL 是否配置、权重是否加载；
    - ΔV 全错 → 多半权重没加载完就收到包（正常流程不会发生，加载在

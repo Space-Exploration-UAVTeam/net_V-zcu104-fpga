@@ -76,6 +76,43 @@ def _read_numbers(path):
     return np.array(vals, dtype=np.float64)
 
 
+# ---------------------------------------------------------------------------
+# v2 数据源（双精度 .npy 交付，2026-08-15）
+# ---------------------------------------------------------------------------
+# 默认（v1）读 data/ 下的 txt，行为完全不变；调 set_source_v2(param_dir) 后，
+# 本模块的 read_weight / read_bias / read_normalization 改读
+# param_dir（神经网络部署输入_v2/网络参数）下的 .npy：
+#   layer_{:02d}_weight.npy / layer_{:02d}_bias.npy
+#   net_V_input_normalization_MEAN.npy / _VAR.npy
+# set_source_v1() 切回。开关只影响这三个函数，其它读取路径不动。
+_V2_PARAM_DIR = None
+
+
+def set_source_v2(param_dir):
+    """切换权重/偏置/归一化读取到 v2 .npy 数据源（param_dir 必须存在）。"""
+    global _V2_PARAM_DIR
+    if not os.path.isdir(param_dir):
+        raise FileNotFoundError(f"v2 参数目录不存在: {param_dir}")
+    for layer_no in range(1, 8):
+        for kind in ("weight", "bias"):
+            p = os.path.join(param_dir,
+                             "layer_{:02d}_{}.npy".format(layer_no, kind))
+            if not os.path.exists(p):
+                raise FileNotFoundError(f"v2 参数文件缺失: {p}")
+    _V2_PARAM_DIR = param_dir
+
+
+def set_source_v1():
+    """切回 v1 txt 数据源（默认）。"""
+    global _V2_PARAM_DIR
+    _V2_PARAM_DIR = None
+
+
+def source_name():
+    """当前数据源描述（打印用）。"""
+    return "v2(npy:{})".format(_V2_PARAM_DIR) if _V2_PARAM_DIR else "v1(txt)"
+
+
 def read_weight(layer_no, rows=None, cols=None):
     """读第 layer_no 层权重。
 
@@ -92,10 +129,14 @@ def read_weight(layer_no, rows=None, cols=None):
     """
     import config.model_config as cfg
 
-    fname = cfg.WEIGHT_PREFIX.format(layer_no) + ".txt"
-    path = _resolve_path("weights", fname)
-
-    arr = _read_numbers(path)
+    if _V2_PARAM_DIR is not None:
+        path = os.path.join(_V2_PARAM_DIR,
+                            cfg.WEIGHT_PREFIX.format(layer_no) + ".npy")
+        arr = np.load(path).astype(np.float64).ravel()
+    else:
+        fname = cfg.WEIGHT_PREFIX.format(layer_no) + ".txt"
+        path = _resolve_path("weights", fname)
+        arr = _read_numbers(path)
 
     # 形状校验
     if rows is not None and cols is not None:
@@ -114,6 +155,11 @@ def read_bias(layer_no):
     """读第 layer_no 层偏置（txt，每行一个数），返回 numpy 数组（1D）。"""
     import config.model_config as cfg
 
+    if _V2_PARAM_DIR is not None:
+        path = os.path.join(_V2_PARAM_DIR,
+                            cfg.BIAS_PREFIX.format(layer_no) + ".npy")
+        return np.load(path).astype(np.float64).ravel()
+
     fname = cfg.BIAS_PREFIX.format(layer_no) + ".txt"
     path = _resolve_path("biases", fname)
     return _read_numbers(path)
@@ -126,7 +172,16 @@ def read_normalization():
         (mean, var)：两个 7 维 numpy 数组，z = (x - mean) / sqrt(var)
 
     文件行格式：feature_01：5.9142e+02   5.3181e+04（全角冒号分隔）。
+    v2 数据源下改读 net_V_input_normalization_MEAN/VAR.npy。
     """
+    if _V2_PARAM_DIR is not None:
+        mean = np.load(os.path.join(
+            _V2_PARAM_DIR, "net_V_input_normalization_MEAN.npy"))
+        var = np.load(os.path.join(
+            _V2_PARAM_DIR, "net_V_input_normalization_VAR.npy"))
+        return (np.asarray(mean, dtype=np.float64).ravel(),
+                np.asarray(var, dtype=np.float64).ravel())
+
     path = _resolve_path("", "net_V_input_normalization.txt")
     mean, var = [], []
     num = re.compile(r"[-+]?\d+\.?\d*[eE][-+]?\d+|[-+]?\d+\.?\d*")

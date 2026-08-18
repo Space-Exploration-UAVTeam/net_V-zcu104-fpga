@@ -132,8 +132,8 @@ def cmd_sample(board, port, timeout):
     vec = {"name": "s00_sample_00",
            "raw": [7.5784e2, 1.0608e0, 4.1086e1, 3.4237e-2,
                    -2.4982e0, 2.5000e-3, 3.4560e6],
-           "dv_float": 490.4415,   # 浮点前向期望
-           "dv_fixed": 490.4013}   # 定点 golden（判定基准）
+           "dv_float": 490.4477,   # 浮点前向期望（v2 权重，2026-08-15 更新）
+           "dv_fixed": 490.4064}   # 定点 golden（判定基准，v2 acc7=0x001ea68081）
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     n_pass, n_fail, _ = run_vectors(sock, board, port, timeout, [vec])
     print("sample_00: {}".format("PASS" if n_pass == 1 else "FAIL"))
@@ -183,7 +183,7 @@ def cmd_run(board, port, timeout, raw7):
 class FakeBoardSocket:
     def __init__(self):
         self.sent = []
-        self.dv = 490.4013
+        self.dv = 490.4064
 
     def settimeout(self, t):
         pass
@@ -246,8 +246,8 @@ def selftest():
     vecs = [{"name": "v%02d" % i,
              "raw": [7.5784e2, 1.0608, 41.086, 0.034237,
                      -2.4982, 2.5e-3, 3.456e6],
-             "dv_float": 490.4415,
-             "dv_fixed": 490.4013} for i in range(27)]   # 假板返回定点值
+             "dv_float": 490.4477,
+             "dv_fixed": 490.4064} for i in range(27)]   # 假板返回定点值
     n_pass, n_fail, rows = run_vectors(fake, None, 0, 0.1, vecs,
                                        verbose=False)
     check("假板批量 27 组全过（容差内）", n_pass == 27 and n_fail == 0)

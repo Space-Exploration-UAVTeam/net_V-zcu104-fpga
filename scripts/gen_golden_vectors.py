@@ -133,6 +133,15 @@ def forward_fixed_traced(x_q, cache):
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
+
+    # --v2 <param_dir>：切到 v2 .npy 数据源（默认 v1 txt 行为不变）
+    argv = sys.argv[1:]
+    if "--v2" in argv:
+        reader.set_source_v2(argv[argv.index("--v2") + 1])
+        print(">>> 数据源：v2 npy（{}）".format(reader.source_name()))
+    else:
+        print(">>> 数据源：v1 txt（默认）")
+
     cache = network.build_fixed_cache()
     cache_f = network.load_network_cache_float()
 
